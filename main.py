@@ -24,7 +24,7 @@ def display_food_info(foodName: str):
     df = pd.read_excel(file_path, sheet_name=_SHEET_NAME)
     filtered_data = df[df[_KEY_COLUMN] == foodName]
     if filtered_data.empty:
-        print(font_red(f"Food name {foodName} not found in the database."))
+        print(font_red(f"Food name {foodName} not found in the database(excel)."))
         return
     # Convert the filtered data to the desired format
     filtered_data_dict = filtered_data.to_dict(orient='records')[0]
