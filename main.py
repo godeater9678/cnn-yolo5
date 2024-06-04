@@ -73,5 +73,5 @@ for file in files:
         name_kr = _NAME_DICT.get(name, GoogleTranslator(source='en', target='ko').translate(name))
         print(font_yellow(f"file: {file} : detected as {name} / {name_kr}"))
         display_food_info(name_kr)
-    #result['results'].show()
-    #input("Press any key to continue...")
+    result['results'].show()
+    input("Press any key to continue...")
