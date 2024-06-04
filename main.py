@@ -3,6 +3,7 @@ import pandas as pd
 from common.gpuTest import check_cuda
 from domain.yolo.classifier.foodFighter import classify_image
 from common.util import normalize_filenames
+from deep_translator import GoogleTranslator
 
 _PATH_SHEET = 'resources/yolo/음식분류 AI 데이터 영양DB.xlsx'
 _PATH_IMAGES = 'resources/yolo/images'
@@ -43,7 +44,7 @@ def list_files_full_path(directory):
     normalize_filenames(directory=directory)
     files_list = os.listdir(directory)
     full_paths = [os.path.join(directory, file) for file in files_list]
-    return full_paths
+    return sorted(full_paths)
 
 
 def font_yellow(string):
@@ -63,11 +64,14 @@ print(font_yellow(f'\n\n이미지 분석 : {_PATH_IMAGES}'))
 files = list_files_full_path(_PATH_IMAGES)
 for file in files:
     print("\n-------------------------------------------------------------\n")
-    names = classify_image(file)
+    result = classify_image(file)
+    names = None if result is None else result['names']
     if names is None:
         print(font_red(f"file: {file} : No food detected(yolo)."))
         continue
     for name in names:
-        name_kr = _NAME_DICT.get(name, 'Unknown')
-        print(font_yellow(f"file: {file} : detected as {name} / {_NAME_DICT.get(name, 'Unknown')}"))
+        name_kr = _NAME_DICT.get(name, GoogleTranslator(source='en', target='ko').translate(name))
+        print(font_yellow(f"file: {file} : detected as {name} / {name_kr}"))
         display_food_info(name_kr)
+    #result['results'].show()
+    #input("Press any key to continue...")
