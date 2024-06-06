@@ -1,9 +1,13 @@
 import os
-from pathlib import Path
 import pathlib
+import platform
+from pathlib import Path, PosixPath, WindowsPath
 
 # 윈도우에서 만든 모델을 로드할때 패스 에러가 발생하는 것을 막기위함
-pathlib.WindowsPath = pathlib.PosixPath
+# Check if the OS is macOS
+if platform.system() == 'Darwin':
+    # Override WindowsPath to PosixPath
+    pathlib.WindowsPath = PosixPath
 
 import torch
 from PIL import Image
